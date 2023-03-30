@@ -8,7 +8,7 @@ def make_argument_parser():
     parser = argparse.ArgumentParser(
         description="Processing filepaths and values required for setup")
     parser.add_argument("--h5_directory",
-                        default="/home/tomcat/entrainment/asist3",
+                        default="./asist3",
                         help="directory for storing h5 files")
     return parser
 
