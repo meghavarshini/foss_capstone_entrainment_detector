@@ -1,7 +1,7 @@
 import os
 import csv
 import pandas as pd
-dir = "/Users/meghavarshinikrishnaswamy/transcripts"
+dir = "./transcripts"
 unique_trials = ["T000719", "T000720"]
 def open_files(dir):
     file_list = []
