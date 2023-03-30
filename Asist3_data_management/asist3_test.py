@@ -19,8 +19,9 @@ def load_h5(file):
     test = np.array(file['dataset'])
     print("loading complete!")
     return test
-def model_testing(model_name, X_test, cuda):
 
+
+def model_testing(model_name, X_test, cuda):
     model = VAE().double()
     model = torch.load(model_name)
     model.eval()
@@ -76,33 +77,23 @@ def model_testing(model_name, X_test, cuda):
 
         recon_batch = model(x_data)
 
-        # Looks like x, y means different speakers?
-        #ToDo: check if this is the case
+        
         z_x = model.embedding(x_data)
         z_y = model.embedding(y_data)
-        # z_x = x_data
-        # z_y = y_data
-        loss_real = lp_distance(z_x, z_y, p).data
-        # loss_real = loss_function(z_x, z_y, mu, logvar)
 
-        #randomly selected fake item ? FIND OUT how the data is split
-        # Is an item an utterance? A whole conversation?-
-        # Take half the conversation, compare it to a real second half, and a fake second half?
+        loss_real = lp_distance(z_x, z_y, p).data
+
         z_y_fake = model.embedding(y_fake_data)
-        # z_y_fake = y_fake_data
 
         loss_fake = lp_distance(z_x, z_y_fake, p).data
-        # loss_fake = loss_function(z_x, z_y_fake, mu, logvar)
 
         test_loss += loss_real
         fake_test_loss += loss_fake
         print("model run complete!")
 
-    # this is inefficient- find a way to do everything on CPU
         Loss.append(loss_real.cpu())
         Fake_loss.append(loss_fake.cpu())
 
-    # print loss_real, loss_fake
     test_loss /= X_test.shape[0]
     fake_test_loss /= X_test.shape[0]
     Loss = np.array(Loss)
