@@ -1,7 +1,7 @@
 import os
 import csv
 import pandas as pd
-dir = "./transcripts"
+dir = "../sound_and_transcripts/transcripts"
 # This is a list of unique trials in the dataset:
 unique_trials = ["T000603", "T000604",
                  "T000605", "T000606",

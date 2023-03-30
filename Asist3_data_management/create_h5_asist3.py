@@ -10,7 +10,7 @@ def make_argument_parser():
     parser = argparse.ArgumentParser(
         description="Processing filepaths and values required for setup")
     parser.add_argument("--h5_directory",
-                        default="./transcripts/files_for_pipeline/output",
+                        default="../sound_and_transcripts/transcripts/files_for_pipeline/output",
                         help="directory for storing h5 files")
     return parser
 

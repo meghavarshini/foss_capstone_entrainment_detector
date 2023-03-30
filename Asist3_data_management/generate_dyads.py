@@ -296,10 +296,10 @@ def id_whether_to_extract(row, following_row, speaker_pair):
 if __name__ == "__main__":
     # todo: also change the path to SMILExtract in line 163
     # get location to savedir
-    savedir = "./transcripts/files_for_pipeline/output"
+    savedir = "../sound_and_transcripts/transcripts/files_for_pipeline/output"
 
     # get location to dir with files of interest
-    data_dir = Path("./transcripts/files_for_pipeline")  # todo: change to path with files
+    data_dir = Path("../sound_and_transcripts/transcripts/files_for_pipeline")  # todo: change to path with files
 
     all_files_of_interest = {}
 
