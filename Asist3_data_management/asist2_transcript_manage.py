@@ -2,8 +2,17 @@ import os
 import csv
 import pandas as pd
 dir = "./transcripts"
-unique_trials = ["T000719", "T000720"]
+# This is a list of unique trials in the dataset:
+unique_trials = ["T000603", "T000604",
+                 "T000605", "T000606",
+                 "T000719", "T000720"
+                 "T000723", "T000724"]
+
 def open_files(dir):
+    '''
+    Opens a given directory, looks for txt files,
+    and adds names of the files to a list.
+    '''
     file_list = []
     for file in os.listdir(dir):
         ext = file.split('.')
@@ -13,6 +22,11 @@ def open_files(dir):
     return file_list
 
 def extract_utterances(dir, unique_trials, file_ls):
+    '''
+    Opens files from a list, and uses the list of trial names to extract information
+    from the transcripts and saves it to a dataframe
+    '''
+
     for i in unique_trials:
         print("starting with trial: ", i)
         filesavename = None
