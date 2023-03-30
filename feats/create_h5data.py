@@ -1,4 +1,3 @@
-# to run: use `train.py`
 from os import path
 from glob import glob
 import h5py
@@ -7,10 +6,6 @@ import random
 import numpy as np
 import pandas as pd
 import math
-
-# Major change: pd.read_csv(sess_file) to pd.read_csv(sess_file,header=None)
-# this ensures that the top row of sessList was read as data, not header
-# This significantly reduced the number of rows in the h5 file
 
 def make_argument_parser():
 	parser = argparse.ArgumentParser(
@@ -37,10 +32,9 @@ def split_files(feats_dir,sess_List= None):
 		print("list of transcripts exists")
 		with open(sess_List, 'r') as f:
 			temp = f.read().splitlines()
-			# print(temp)
-			# print(sorted(glob(feats_dir + '/*.csv')))
+			
 			print(len(temp), len(sorted(glob(feats_dir + '/*.csv'))))
-			if len(temp) == len(sorted(glob(feats_dir + '/*.csv'))):
+			if len(temp) !=0 and len(temp) == len(sorted(glob(feats_dir + '/*.csv'))):
 				print("list of shuffled files exists, importing...")
 				sessList = temp
 				print(sessList)
@@ -52,7 +46,6 @@ def split_files(feats_dir,sess_List= None):
 		sessList= sorted(glob(feats_dir + '/*.csv'))
 		print("sessList: ", sessList)
 		print("creating a list of shuffled feature files and saving to disk...")
-		# print("sessList", sessList)
 		random.seed(SEED)
 		random.shuffle(sessList)
 		with open(sess_List, 'w') as f:
@@ -61,10 +54,6 @@ def split_files(feats_dir,sess_List= None):
 		with open(sess_List, 'r') as f:
 			sessList = f.read().splitlines()
 
-	#Alternative to 13-30:
-	# sessList= sorted(glob.glob(feats_dir + '/*.csv'))
-	# random.seed(SEED)
-	# random.shuffle(sessList)
 
 	num_files_all = len(sessList)
 	num_files_train = int(np.ceil((frac_train*num_files_all)))
@@ -155,87 +144,6 @@ def create_test(sessTest, h5_dir):
 	hf.create_dataset('vqset', data=X_test[:,150:])
 	hf.close()
 	return None
-
-
-# ## Code repeated for creating h5 files from a different set of features.
-# data_dir = feats_nonorm_nopre
-#
-# sessList= sorted(glob.glob(data_dir + '/*.csv'))
-# random.seed(SEED)
-# random.shuffle(sessList)
-#
-# num_files_all = len(sessList)
-# num_files_train = int(np.ceil((frac_train*num_files_all)))
-# num_files_val = int(np.ceil((frac_val*num_files_all)))
-# num_files_test = num_files_all - num_files_train - num_files_val
-#
-# sessTrain = sessList[:num_files_train]
-# sessVal = sessList[num_files_train:num_files_val+num_files_train]
-# sessTest = sessList[num_files_val+num_files_train:]
-# print(len(sessTrain) + len(sessVal) + len(sessTest))
-#
-# # Create Train Data file
-#
-# X_train =np.array([])
-# X_train = np.empty(shape=(0, 0), dtype='float64' )
-# for sess_file in sessTrain:
-# 	df_i = pd.read_csv(sess_file)
-# 	xx=np.array(df_i)
-# 	X_train=np.vstack([X_train, xx]) if X_train.size else xx
-#
-#
-# X_train = X_train.astype('float64')
-# hf = h5py.File('data/train_Fisher_nonorm_nopre.h5', 'w')
-# hf.create_dataset('dataset', data=X_train)
-# hf.create_dataset('prosset', data=X_train[:,:24])
-# hf.create_dataset('specset', data=X_train[:,24:150])
-# hf.create_dataset('vqset', data=X_train[:,150:])
-# hf.close()
-#
-#
-# # Create Val Data file
-#
-# X_val =np.array([])
-# for sess_file in sessVal:
-# 	df_i = pd.read_csv(sess_file)
-# 	xx=np.array(df_i)
-# 	X_val=np.vstack([X_val, xx]) if X_val.size else xx
-#
-# X_val = X_val.astype('float64')
-# hf = h5py.File('data/val_Fisher_nonorm_nopre.h5', 'w')
-# hf.create_dataset('dataset', data=X_val)
-# hf.create_dataset('prosset', data=X_val[:,:24])
-# hf.create_dataset('specset', data=X_val[:,24:150])
-# hf.create_dataset('vqset', data=X_val[:,150:])
-# hf.close()
-#
-#
-#
-#
-# # Create Test Data file
-# spk_base = 1
-# X_test =np.array([])
-# for sess_file in sessTest:
-# 	df_i = pd.read_csv(sess_file)
-# 	xx=np.array(df_i)
-# 	N = xx.shape[0]
-# 	if np.mod(N,2)==0:
-# 		spk_label = np.tile([spk_base, spk_base+1], [1, N/2])
-# 	else:
-# 		spk_label = np.tile([spk_base, spk_base+1], [1, N/2])
-# 		spk_label = np.append(spk_label, spk_base)
-# 	xx = np.hstack((xx, spk_label.T.reshape([N,1])))
-# 	X_test=np.vstack([X_test, xx]) if X_test.size else xx
-# 	spk_base += 1
-#
-#
-# X_test = X_test.astype('float64')
-# hf = h5py.File('data/test_Fisher_nonorm_nopre.h5', 'w')
-# hf.create_dataset('dataset', data=X_test)
-# hf.create_dataset('prosset', data=X_test[:,:24])
-# hf.create_dataset('specset', data=X_test[:,24:150])
-# hf.create_dataset('vqset', data=X_test[:,150:])
-# hf.close()
 
 if __name__ == "__main__":
 	parser = make_argument_parser()
