@@ -4,6 +4,6 @@ This is codebase for pre-processing the Multicats Dataset and running a pre-proc
 
 1. Download the pre-trained model using: `wget https://kraken.sista.arizona.edu/tomcat/models/entrainment_baseline/`
 2. Download the entrainment section of the Multicats dataset using: `ToDo`
-3. In order to pre-process the ASIST3 dataset and use it for testing the entrainment baseline model, use the `Asist3_data_management` directory. Details for running the codebase are in a ReadME within the folder.
+3. Pre-process the ASIST3 dataset and use it for testing the entrainment baseline model, with scripts in the `Asist3_data_management` directory. Details for running the codebase are in a ReadME within the folder.
 4. `Feats` contains all the code using for pre-processing the Fisher Dataset, as well as training the neural network model.
 5. `Scripts` and `Praat_scripts` contain other scripts for pre-processing used for working with different extensions, and for structuring the transcript files.
