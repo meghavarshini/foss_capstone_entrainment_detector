@@ -107,6 +107,30 @@ if __name__ == "__main__":
 	print("cuda availability: ", args.cuda)
 	print("gpu details: ", torch.cuda.get_device_name(0))
 
+	
+	# Check if Model exists:
+	if os.path.isfile(args.model_name):
+    		print(f"The model '{args.model_name}' exists. Training will rewrite it.")
+	else:
+	    print(f"The model '{args.model_name}' does not exist. Creating file...")
+	
+	# Check if model directory exists:
+	model_directory_path = os.path.dirname(args.model_name)
+	# Check if H5 directory exists
+	if os.path.isdir(model_directory_path):
+	    print(f"The directory for storing the trained model '{model_directory_path}' exists. Continue...")
+	else:
+	    print(f"The directory for storing the trained model '{model_directory_path}' does not exist. Creating it...")
+	    os.makedirs(model_directory_path, exist_ok=True)
+	    print("Rechecking for model: ", os.path.isdir(model_directory_path))
+	
+	# Check if H5 directory exists
+	if os.path.isdir(args.h5_directory):
+	    print(f"The directory with training files '{args.h5_directory}' exists. Continue...")
+	else:
+	    print(f"The directory with training files '{args.h5_directory}' does not exist.")
+	    sys.exit(1)
+
 
 	Tloss =[]
 	Vloss =[]
